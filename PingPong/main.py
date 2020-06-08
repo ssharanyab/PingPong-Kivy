@@ -11,6 +11,10 @@ from kivy.clock import Clock
 from random import randint
 
 
+class PongPaddle(Widget):
+    pass
+
+
 class PongBall(Widget):
     velocity_x = NumericProperty(0)
     velocity_y = NumericProperty(0)
@@ -23,12 +27,24 @@ class PongBall(Widget):
 
 class PongGame(Widget):
     ball = ObjectProperty(None)
+    player1 = ObjectProperty(None)
+    player2 = ObjectProperty(None)
 
     def serve_ball(self):
         self.ball.velocity = Vector(6, 0).rotate(randint(0, 360))
 
     def update(self, dt):
         self.ball.move()
+        if (self.ball.y < 0) or (self.ball.y > self.height - 50):
+            self.ball.velocity_y *= -1
+        if (self.ball.x < 0) or (self.ball.x > self.width - 50):
+            self.ball.velocity_x *= -1
+
+    def on_touch_move(self, touch):
+        if touch.x < self.width/ 1/4:
+            self.player1.center_y = touch.y
+        if touch.x > self.width * 3/4:
+            self.player2.center_y = touch.y
 
 
 class PongApp(App):
