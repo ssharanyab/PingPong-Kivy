@@ -12,7 +12,10 @@ from random import randint
 
 
 class PongPaddle(Widget):
-    pass
+    score = NumericProperty(0)
+    def bounce_ball(self,ball):
+        if self.collide_widget(ball):
+            ball.velocity_x *= -1
 
 
 class PongBall(Widget):
@@ -37,8 +40,14 @@ class PongGame(Widget):
         self.ball.move()
         if (self.ball.y < 0) or (self.ball.y > self.height - 50):
             self.ball.velocity_y *= -1
-        if (self.ball.x < 0) or (self.ball.x > self.width - 50):
+        if self.ball.x < 0:
             self.ball.velocity_x *= -1
+            self.player1.score += 1
+        if self.ball.x > self.width - 50:
+            self.ball.velocity_x *= -1
+            self.player2.score += 1
+        self.player1.bounce_ball(self.ball)
+        self.player2.bounce_ball(self.ball)
 
     def on_touch_move(self, touch):
         if touch.x < self.width/ 1/4:
