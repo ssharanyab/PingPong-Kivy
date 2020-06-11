@@ -13,6 +13,7 @@ from random import randint
 
 class PongPaddle(Widget):
     score = NumericProperty(0)
+
     def bounce_ball(self,ball):
         if self.collide_widget(ball):
             ball.velocity_x *= -1
@@ -42,10 +43,10 @@ class PongGame(Widget):
             self.ball.velocity_y *= -1
         if self.ball.x < 0:
             self.ball.velocity_x *= -1
-            self.player1.score += 1
+            self.player2.score += 1
         if self.ball.x > self.width - 50:
             self.ball.velocity_x *= -1
-            self.player2.score += 1
+            self.player1.score += 1
         self.player1.bounce_ball(self.ball)
         self.player2.bounce_ball(self.ball)
 
